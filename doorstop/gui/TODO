@@ -1,0 +1,51 @@
+# TODO
+
+**Bunch of improvement left to do related to the Doorstop GUI**
+
+## Bug
+- Adding an item, immediately create a file on disk without explicit save
+- Removing an item, immediately remove file from disk without explicit save
+
+## GUI Improvement
+- Make view fit in screen (or add scroll bar)
+
+### GUI Improvement, No Can Do
+Need investigation, but the following may not be possible to implement:
+ - Make item strikethrough (or italic) in the tree when they are not active.
+ - Make item bold in the tree when they are Heading.
+
+**Since:**
+- A treeview only accepts 1 font (can't specify a font per cell)
+ - Source: https://groups.google.com/forum/#!topic/comp.lang.tcl/85-TWOhcCOA
+- tkinter only accept Unicode character up to FFFFFF
+
+## Code quality
+- Add Mypy lint to build process
+ - Add Mypy types to all functions
+- Add python documentation to every method.
+- Review naming convention (use lint tool to identify them.. pep8)
+- Unit test Action, Reducer, Store, State.
+- Test environment corner case situation (readonly folder, ...)
+
+## User friendliness
+- Add scroll bar to every widget
+- Make tree node draggable and reorderable with the mouse
+
+## Missing feature
+- Add help in menu
+ - Help > About
+ - Help > GUI Help
+ - Help > DoorStop project
+- Add the possibility to add document.
+- Add the possibility to remove document.
+- Add a warning/issue list view.
+
+## User Accessibility
+- Isolate all text
+- Add a switch language in the menu.
+- I18n English
+- I18n other languages
+
+## Idea
+- Search feature
+- Unify command line (GUI/CLI able to connect to remote/local data)

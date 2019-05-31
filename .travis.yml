@@ -8,6 +8,10 @@ matrix:
       dist: xenial
       sudo: true
 
+addons:
+  apt:
+    update: true
+
 cache:
   pip: true
   directories:

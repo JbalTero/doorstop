@@ -83,7 +83,7 @@ class TestModule(MockDataMixIn, unittest.TestCase):
         dirpath = os.path.join('mock', 'directory')
         assets_path = os.path.join(dirpath, 'assets')
         path = os.path.join(dirpath, 'published.custom')
-        document = MockDocument('/some/path')
+        document = MockDocument(path='/some/path', should_auto_save=True)
         mock_open.side_effect = lambda *args, **kw: mock.mock_open(read_data="$body").return_value
         # Act
         path2 = publisher.publish(document, path, '.html')
@@ -215,7 +215,7 @@ class TestModule(MockDataMixIn, unittest.TestCase):
 
     def test_multi_line_heading_to_markdown(self):
         """Verify a multi line heading is published as a heading with an attribute equal to the item id"""
-        item = MockItemAndVCS('path/to/req3.yml',
+        item = MockItemAndVCS('path/to/req3.yml', should_auto_save=True,
                               _file=("links: [sys3]" + '\n'
                                      "text: 'Heading\n\nThis section describes publishing.'" + '\n'
                                      "level: 1.1.0" + '\n'
@@ -230,7 +230,7 @@ class TestModule(MockDataMixIn, unittest.TestCase):
     @patch('doorstop.settings.PUBLISH_HEADING_LEVELS', False)
     def test_multi_line_heading_to_markdown_no_heading_levels(self):
         """Verify a multi line heading is published as a heading, without level, with an attribute equal to the item id"""
-        item = MockItemAndVCS('path/to/req3.yml',
+        item = MockItemAndVCS('path/to/req3.yml', should_auto_save=True,
                               _file=("links: [sys3]" + '\n'
                                      "text: 'Heading\n\nThis section describes publishing.'" + '\n'
                                      "level: 1.1.0" + '\n'
@@ -419,7 +419,7 @@ class TestTableOfContents(unittest.TestCase):
     """Unit tests for the Document class."""
 
     def setUp(self):
-        self.document = MockDocument(FILES, root=ROOT)
+        self.document = MockDocument(FILES, root=ROOT, should_auto_save=True)
 
     def test_toc_no_links_or_heading_levels(self):
         """Verify the table of contents is generated with heading levels"""
@@ -429,7 +429,8 @@ class TestTableOfContents(unittest.TestCase):
     * 1.4 REQ003
     * 1.6 REQ004
     * 2.1 REQ002
-    * 2.1 REQ2-001\n'''
+    * 2.1 REQ2-001
+    * 9.9 REQ005\n'''
         toc = publisher._table_of_contents_md(self.document, linkify=None)
         print(toc)
         self.assertEqual(expected, toc)
@@ -443,7 +444,8 @@ class TestTableOfContents(unittest.TestCase):
     * REQ003
     * REQ004
     * REQ002
-    * REQ2-001\n'''
+    * REQ2-001
+    * REQ005\n'''
         toc = publisher._table_of_contents_md(self.document, linkify=None)
         print(toc)
         self.assertEqual(expected, toc)
@@ -456,6 +458,7 @@ class TestTableOfContents(unittest.TestCase):
     * [1.4 REQ003](#REQ003)
     * [1.6 REQ004](#REQ004)
     * [2.1 REQ002](#REQ002)
-    * [2.1 REQ2-001](#REQ2-001)\n'''
+    * [2.1 REQ2-001](#REQ2-001)
+    * [9.9 REQ005](#REQ005)\n'''
         toc = publisher._table_of_contents_md(self.document, linkify=True)
         self.assertEqual(expected, toc)
